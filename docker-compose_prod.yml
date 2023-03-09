@@ -1,0 +1,43 @@
+version: '3'
+services:
+    nginx:
+        build: nginx
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./symfony:/app/symfony
+            - ./nginx/symfony.conf:/etc/nginx/conf.d/symfony.conf
+            - ./nginx/entrypoint.sh:/entrypoint.sh
+
+            - ./nginx/wildcert.pem:/certs/wildcert.pem
+            - ./nginx/wildkey.key:/certs/wildkey.key
+
+            - ./nginx/.env.prod:/app/symfony/.env
+
+
+    app:
+        build: php
+        ports:
+            - 8000:8000
+        volumes:
+        - ./php/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
+        - ./symfony:/app/symfony
+
+        - ./php/entrypoint.sh:/entrypoint.sh
+
+        - ./nginx/.env.prod:/app/symfony/.env
+
+#     db:
+#         image: mysql
+#         environment:
+#             - MYSQL_ROOT_PASSWORD=abc123..
+#             - MYSQL_DATABASE=tarefa
+#             - MYSQL_USER=a22yagormTarefa
+#             - MYSQL_PASSWORD=a22yagormTarefaPW
+#         volumes:
+#             - baseDatos:/var/lib/mysql
+#             - ./db.sql:/docker-entrypoint-initdb.d/db.sql
+
+# volumes:
+#     baseDatos:
