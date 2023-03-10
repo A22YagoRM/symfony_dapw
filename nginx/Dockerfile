@@ -23,4 +23,3 @@ RUN sed -i "s/^listen\.owner.*$/listen.owner = nginx/" /etc/php/7.4/fpm/pool.d/w
 RUN sed -i "s/^listen\.group.*$/listen.group = nginx/" /etc/php/7.4/fpm/pool.d/www.conf
 
 CMD ["/entrypoint.sh"]
-# CMD ["/sbin/entrypoint.sh"]

@@ -12,12 +12,10 @@ RUN sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /
 RUN apt update && apt install -y php8.2-fpm
 
 EXPOSE 9000
-EXPOSE 8000
+# EXPOSE 8000
 
 RUN apt install -y php8.2-zip php8.2-xml php8.2-curl php8.2-gd php8.2-mysql php8.2-intl php8.2-mbstring php8.2-sqlite3
 
-RUN mkdir -p /run/php/
-RUN touch /run/php/php8.2-fpm.sock
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
@@ -34,6 +32,9 @@ WORKDIR /app/symfony
 
 RUN git config --global user.name "a22yagorm"
 RUN git config --global user.email "a22yagorm@iessanclemente.net"
+
+RUN mkdir -p /run/php/
+RUN touch /run/php/php8.2-fpm.sock
 
 # CMD ["/usr/sbin/php-fpm8.2", "-F"]
 CMD [ "/entrypoint.sh" ]

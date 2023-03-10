@@ -13,20 +13,18 @@ services:
             - ./nginx/wildcert.pem:/certs/wildcert.pem
             - ./nginx/wildkey.key:/certs/wildkey.key
 
-            - ./nginx/.env.prod:/app/symfony/.env
+            # - ./php/.env.prod:/app/symfony/.env
 
 
     app:
         build: php
-        ports:
-            - 8000:8000
         volumes:
         - ./php/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
         - ./symfony:/app/symfony
 
         - ./php/entrypoint.sh:/entrypoint.sh
 
-        - ./nginx/.env.prod:/app/symfony/.env
+        - ./php/.env.prod:/app/symfony/.env
 
 #     db:
 #         image: mysql
