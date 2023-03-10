@@ -6,22 +6,26 @@ services:
             - 80:80
             - 443:443
         volumes:
-            - ./html:/app/test1
-            - ./nginx/sitio.conf:/etc/nginx/conf.d/sitio.conf
-            - ./nginx/entrypoint.sh:/sbin/entrypoint.sh
+            - ./symfony:/app/symfony
+            - ./nginx/symfony.conf:/etc/nginx/conf.d/symfony.conf
+            - ./nginx/entrypoint.sh:/entrypoint.sh
 
             - ./nginx/wildcert.pem:/certs/wildcert.pem
             - ./nginx/wildkey.key:/certs/wildkey.key
 
-            - ./symfony:/app/symfony
-            - ./nginx/symfony.conf:/etc/nginx/conf.d/symfony.conf
+            - ./nginx/.env.dev:/app/symfony/.env
 
     app:
-        build: phpDrupal
+        build: php
+        ports:
+            - 8000:8000
         volumes:
-        - ./html:/app/test1
-        - ./phpDrupal/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
+        - ./php/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
         - ./symfony:/app/symfony
+
+        - ./php/entrypoint.sh:/entrypoint.sh
+
+        - ./nginx/.env.dev:/app/symfony/.env
 
     db:
         image: mysql
